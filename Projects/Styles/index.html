@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+            *{
+                margin: 0px;
+                padding: 0px;
+                box-sizing: border-box;
+            }
+
+            body{
+                font-family: Arial, Helvetica, sans-serif;
+                background-color: #f4f4f4;
+                color: #333;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0px;
+            
+            }
+
+            .login-form{
+                background: #fff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(red, green, blue, alpha);
+                width: 300px;
+            }
+
+            .login-form h2{
+                margin-bottom: 20px;
+                text-align: center;
+            }
+
+            .login-form input{
+                width: 100px;
+                padding: 10px;
+                margin: 10px 0;
+                border: 1 px solid #ccc;
+                border-radius: 5px;
+            }
+
+            .login-form button{
+                width: 100px;
+                padding: 10px;
+                background-color: #007bff;
+                color:#fff;
+                border: none;
+                border-radius: 5px;
+                pointer-events: cursor;
+            }
+
+            .login-form button:hover{
+                background-color: #0056b3;
+
+            }
+
+            .error{
+                color:red;
+                font-size: 0,9em;
+                text-align: center;
+            }
+
+
+
+
+        </style>
+    </head>
+    <body>
+
+       <div class="login-form">
+        <h2>Login</h2>
+        <div id="error" class="error"></div>
+        <input type="email" id="email" placeholder="Enter your Email" required>
+        <input type="password" id="password" placeholder="Enter your password" required>
+        <button onclick="validateLogin()">Login</button>
+       </div>
+        
+       
+        
+        <script>
+            function validateLogin(){
+                  const email=document.getElementById("email").value;
+                  const password=document.getElementById("password").value;
+
+                 const adminEmail="admin@empher.com";
+                 const adminPassword=" empher@123";
+
+                 const userEmail="user@empher.com";
+                 const userPassword="user@123";
+
+                const errorDiv=document.getElementById("error");
+                errorDiv.textContent="";
+
+                if(email===adminEmail && password===adminPassword){
+                    alert("Login as Admin");
+                   localStorage.setItem("loginData", JSON.stringify({role:"Admin".email}));
+                   window.location.href("admin.html");
+                }
+                else if(email===userEmail && password===userPassword){
+                   alert("Login as User");
+                  localStorage.setItem("loginData", JSON.stringify({role:"User".email}));
+                  window.location.href("books.html");
+                }
+                else{
+                     errorDiv.textContent="Invalid email or password!!!";
+                }
+
+            }
+        </script>
+    </body>
+</html>
