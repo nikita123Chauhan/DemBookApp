@@ -1,155 +1,155 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <style>
-            body{
-                font-family:Arial, Helvetica, sans-serif;
-                margin: 20px;
-            }
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Admin Page</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 20px;
+      }
 
-            h1{
-                text-align: center;
-                color:#333;
-            }
+      h1 {
+        text-align: center;
+        color: #333;
+      }
 
-            form{
-                margin-bottom: 20px;
-            }
+      form {
+        margin-bottom: 20px;
+      }
 
-            label{
-                display: block;
-                margin-top:10px;
-            }
+      label {
+        display: block;
+        margin-top: 10px;
+      }
 
-            input, select, button{
-                margin-top: 5px;
-                padding: 10px;
-                font-size: 14px;
-                width: 100px;
-            }
-           
-            .grid-container{
-                display: grid;
-                grid-template-columns: repeat(4, 1fr);
-                gap: 20px;
-            }
+      input,
+      select,
+      button {
+        margin-top: 5px;
+        padding: 10px;
+        font-size: 14px;
+        width: 100%;
+      }
 
-            .card{
-                border: 1px solid #ccc;
-                border-radius: 8px;
-                padding:15px;
-                text-align: center;
-                box-shadow: 0 4px 8px rgba(red, green, blue, alpha);
+      .grid-container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+      }
 
-            }
+      .card {
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 15px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
 
-            .card button{
-                margin: 5px;
-                padding: 8px 12px;
-                font-size: 14px;
-                cursor: pointer;
-            }
+      .card button {
+        margin: 5px;
+        padding: 8px 12px;
+        font-size: 14px;
+        cursor: pointer;
+      }
 
-            .card button:disabled{
-                background-color: #ccc;
-                cursor: not-allowed;
-            }
-        </style>
-    </head>
-    <body>
-        <H1>Admin page</h1>
-            <form id="bookForm">
-                <label for="title">Title</label>
-                <input type="text" id="title" placeholder="Enter book title" required>
-                <label for="author">Author</label>
-                <input type="text" id="author" placeholder="enter author name" required>
-                <label for="category">Category</label>
-               <select id="category" required>
-                  <option value="Fiction">Fiction</option>
-                  <option value="Non-Fiction">Non-fiction</option>
-                  <option value="Science">Science</option>
+      .card button:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Admin Page</h1>
+    <form id="bookForm">
+      <label for="title">Title</label>
+      <input type="text" id="title" placeholder="Enter book title" required />
+      <label for="author">Author</label>
+      <input
+        type="text"
+        id="author"
+        placeholder="Enter author name"
+        required
+      />
+      <label for="category">Category</label>
+      <select id="category" required>
+        <option value="Fiction">Fiction</option>
+        <option value="Comedy">Comedy</option>
+        <option value="Technical">Technical</option>
+      </select>
+      <button type="submit">Add Book</button>
+    </form>
 
-                </select>
-               <button type="submit">Add Book</button>
-            </form>
+    <!-- Display books in a grid -->
+    <div class="grid-container" id="bookGrid"></div>
 
-            <!--Display book in a grid-->
-             <div class="grid-conatiner" id="bookGrid"></div>
+    <script>
+      const bookGrid = document.getElementById("bookGrid");
+      const bookForm = document.getElementById("bookForm");
 
-      
-        
-        <script>
+      // Store the books
+      let books = [];
 
-            const bookGrid=document.getElementById("bookGrid");
-            const bookForm=document.getElementById("bookForm");
+      // Handle form submission to add a new book
+      bookForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const title = document.getElementById("title").value;
+        const author = document.getElementById("author").value;
+        const category = document.getElementById("category").value;
 
-            //store the book
-            let books=[];
+        const newBook = {
+          title,
+          author,
+          category,
+          verified: false,
+        };
 
-            //handle form submission to add a new book
+        books.push(newBook);
+        renderbooks();
 
-            bookForm.addEventListener("submit", (e) => {
-                e.preventDefault();
-                const title=document.getElementById("title").value;
-                const author=document.getElementById("author").value;
-                const category=document.getElementById("category").value;
+        // Clear form inputs
+        bookForm.reset();
+      });
 
-                const newbook={
-                   title,
-                   author,
-                   category,
-                   verified:false,
-                };
+      function renderbooks() {
+        bookGrid.innerHTML = "";
 
-                books.push(newbook);
-                render.books()
-            });
+        books.forEach((book, index) => {
+          const card = document.createElement("div");
+          card.classList.add("card");
 
-            function renderbooks(){
-                 bookGrid.innerHTML=" ";
+          card.innerHTML = `
+            <h3>${book.title}</h3>
+            <p><strong>Author:</strong> ${book.author}</p>
+            <p><strong>Category:</strong> ${book.category}</p>
+            <button onclick="verifyBook(${index})" ${
+            book.verified ? "disabled" : ""
+          }>Verify Book</button>
+            <button onclick="deleteBook(${index})">Delete Book</button>
+          `;
 
-                 books.forEach(books, index => {
-                      const card=document.createElement("div");
-                      card.classList.add("card");
+          bookGrid.appendChild(card);
+        });
+      }
 
-                      card.innerHTML='<h3>${book.title}</h3>
-                      <p><strong>Author:</strong> $ {book.author} </p>
-                      <p><strong>Category:</strong> $ {book.category ? "Yes": "No"}</p>
-                      
-                      <button onclick="verifieyBook(${index})" ${book.verified ? "disabled" : ""} > Verify Book </button>
-                      <button onclick="deleteBook(${index})">Delete Book</button>
-                      ';
+      // Verify book
+      function verifyBook(index) {
+        if (confirm("Are you sure to verify this book?")) {
+          books[index].verified = true;
+          renderbooks();
+        }
+      }
 
-                      bookGrid.appendchild(card);
-
-
-                 });
-            }
-
-            //verify book
-
-            function verifyBook(index){
-                if(confirm("Are you sure to verify")){
-                    books[index].verified=true,
-                    renderbooks();
-                }
-            }
-
-            //delete book
-
-            function deleteBook(index){
-                if(confirm("Are you sure to delete")){
-                    books.splice(index, 1);
-                    render.books();
-                }
-            }
-
-
-        </script>
-    </body>
+      // Delete book
+      function deleteBook(index) {
+        if (confirm("Are you sure to delete this book?")) {
+          books.splice(index, 1);
+          renderbooks();
+        }
+      }
+    </script>
+  </body>
 </html>
